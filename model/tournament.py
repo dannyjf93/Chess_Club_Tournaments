@@ -40,7 +40,7 @@ class Tournament:
             data['venue'],
             data['start_date'],
             data['end_date'],
-            data['number_of_rounds']  # Ensure number_of_rounds is required and present
+            data['number_of_rounds']
         )
         # Set additional attributes using data from the dictionary
         tournament.current_round = data.get('current_round', 1)
