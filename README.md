@@ -24,9 +24,6 @@ This is an application which can be used to manage chess clubs, their correspond
 
     Create and activate a virtual environment
     $ python -m venv env
-
-    Install required packages
-    $ pip install -r requirements.txt
     
     Run the application
     $ python main.py
@@ -41,9 +38,6 @@ This is an application which can be used to manage chess clubs, their correspond
 
     Create and activate a virtual environment
     $ python -m venv env
-
-    Install required packages
-    $ pip install -r requirements.txt
     
     Run the application
     $ python main.py
