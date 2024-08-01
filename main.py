@@ -159,74 +159,81 @@ def main():
                     if 0 <= tournament_index < len(tournaments):
                         selected_tournament = tournaments[tournament_index]
                         while True:
-                            print(f"\nManaging Tournament: {selected_tournament.name}")
+                            current_round_info = f"Current Round: {selected_tournament.current_round} of {selected_tournament.number_of_rounds}"
+                            print(f"\nManaging Tournament: {selected_tournament.name}. {current_round_info}")
                             print("1. Register player for tournament\n2. Enter results for current round\n3. Advance to the next round\n4. Mark tournament as completed\n5. View registered players\n6. Back")
                             sub_choice = input("Enter your choice: ")
 
                             if sub_choice == '1':
-                                print("\n1. Select from list of all players\n2. Search for player by chess identifier\n3. Search for player by name (case insensitive)\n4. Back")
-                                register_choice = input("Enter your choice: ")
+                                # Check if any results have been recorded
+                                if any(selected_tournament.results.values()):
+                                    print("Cannot register new players as results have already been recorded for this tournament.")
+                                else:
+                                    print("\n1. Select from list of all players\n2. Search for player by chess identifier\n3. Search for player by name (case insensitive)\n4. Back")
+                                    register_choice = input("Enter your choice: ")
 
-                                if register_choice == '1':
-                                    players = player_controller.view_players()
-                                    player_view.display_players_with_clubs(players, tournament_controller)
-                                    player_view.display_player_selection_prompt()
-                                    player_choice = input("Enter your choice: ")
-                                    if player_choice.lower() == 'b':
+                                    if register_choice == '1':
+                                        players = player_controller.view_players()
+                                        player_view.display_players_with_clubs(players, tournament_controller)
+                                        player_view.display_player_selection_prompt()
+                                        player_choice = input("Enter your choice: ")
+                                        if player_choice.lower() == 'b':
+                                            continue
+                                        try:
+                                            player_index = int(player_choice) - 1
+                                            if 0 <= player_index < len(players):
+                                                player = players[player_index].to_dict()
+                                                tournament_controller.register_player(selected_tournament.name, player)
+                                            else:
+                                                print("Invalid selection. Please try again.")
+                                        except ValueError:
+                                            print("Invalid input. Please enter a number.")
+
+                                    elif register_choice == '2':
+                                        identifier = input("Enter chess identifier: ")
+                                        players = [p for p in player_controller.view_players() if p.identifier == identifier]
+                                        player_view.display_search_results(players, tournament_controller)
+                                        if players:
+                                            player_view.display_player_selection_prompt()
+                                            player_choice = input("Enter your choice: ")
+                                            if player_choice.lower() == 'b':
+                                                continue
+                                            try:
+                                                player_index = int(player_choice) - 1
+                                                if 0 <= player_index < len(players):
+                                                    player = players[player_index].to_dict()
+                                                    tournament_controller.register_player(selected_tournament.name, player)
+                                                else:
+                                                    print("Invalid selection. Please try again.")
+                                            except ValueError:
+                                                print("Invalid input. Please enter a number.")
+
+                                    elif register_choice == '3':
+                                        name_part = input("Enter part of player's name: ").lower()
+                                        players = [p for p in player_controller.view_players() if name_part in p.name.lower()]
+                                        player_view.display_search_results(players, tournament_controller)
+                                        if players:
+                                            player_view.display_player_selection_prompt()
+                                            player_choice = input("Enter your choice: ")
+                                            if player_choice.lower() == 'b':
+                                                continue
+                                            try:
+                                                player_index = int(player_choice) - 1
+                                                if 0 <= player_index < len(players):
+                                                    player = players[player_index].to_dict()
+                                                    tournament_controller.register_player(selected_tournament.name, player)
+                                                else:
+                                                    print("Invalid selection. Please try again.")
+                                            except ValueError:
+                                                print("Invalid input. Please enter a number.")
+                                    elif register_choice == '4':
                                         continue
-                                    try:
-                                        player_index = int(player_choice) - 1
-                                        if 0 <= player_index < len(players):
-                                            player = players[player_index].to_dict()
-                                            tournament_controller.register_player(selected_tournament.name, player)
-                                        else:
-                                            print("Invalid selection. Please try again.")
-                                    except ValueError:
-                                        print("Invalid input. Please enter a number.")
-
-                                elif register_choice == '2':
-                                    identifier = input("Enter chess identifier: ")
-                                    players = [p for p in player_controller.view_players() if p.identifier == identifier]
-                                    player_view.display_search_results(players, tournament_controller)
-                                    if players:
-                                        player_view.display_player_selection_prompt()
-                                        player_choice = input("Enter your choice: ")
-                                        if player_choice.lower() == 'b':
-                                            continue
-                                        try:
-                                            player_index = int(player_choice) - 1
-                                            if 0 <= player_index < len(players):
-                                                player = players[player_index].to_dict()
-                                                tournament_controller.register_player(selected_tournament.name, player)
-                                            else:
-                                                print("Invalid selection. Please try again.")
-                                        except ValueError:
-                                            print("Invalid input. Please enter a number.")
-
-                                elif register_choice == '3':
-                                    name_part = input("Enter part of player's name: ").lower()
-                                    players = [p for p in player_controller.view_players() if name_part in p.name.lower()]
-                                    player_view.display_search_results(players, tournament_controller)
-                                    if players:
-                                        player_view.display_player_selection_prompt()
-                                        player_choice = input("Enter your choice: ")
-                                        if player_choice.lower() == 'b':
-                                            continue
-                                        try:
-                                            player_index = int(player_choice) - 1
-                                            if 0 <= player_index < len(players):
-                                                player = players[player_index].to_dict()
-                                                tournament_controller.register_player(selected_tournament.name, player)
-                                            else:
-                                                print("Invalid selection. Please try again.")
-                                        except ValueError:
-                                            print("Invalid input. Please enter a number.")
-                                elif register_choice == '4':
-                                    continue
 
                             elif sub_choice == '2':
                                 if len(selected_tournament.players) < 2:
                                     print("There are not enough players registered to begin this tournament.")
+                                elif len(selected_tournament.players) % 2 != 0:
+                                    print("The number of registered players must be even to begin this tournament.")
                                 else:
                                     round_number = selected_tournament.current_round
 
@@ -341,6 +348,8 @@ def main():
                             elif sub_choice == '3':
                                 if len(selected_tournament.players) < 2:
                                     print("There are not enough players registered to begin this tournament.")
+                                elif len(selected_tournament.players) % 2 != 0:
+                                    print("The number of registered players must be even to begin this tournament.")
                                 else:
                                     if selected_tournament.current_round >= selected_tournament.number_of_rounds:
                                         print("All rounds have been played.")
@@ -351,13 +360,20 @@ def main():
                                             break
                                     else:
                                         if str(selected_tournament.current_round) in selected_tournament.results and selected_tournament.results[str(selected_tournament.current_round)]:
-                                            tournament_controller.advance_round(selected_tournament.name)
+                                            confirm_choice = input("Are you sure you want to advance to the next round? [y/n]: ").lower()
+                                            if confirm_choice == 'y':
+                                                tournament_controller.advance_round(selected_tournament.name)
+                                                print("Advanced to the next round.")
+                                            else:
+                                                print("Stayed on the current round.")
                                         else:
                                             print("You must enter the results for the current round before advancing to the next round.")
 
                             elif sub_choice == '4':
                                 if len(selected_tournament.players) < 2:
                                     print("There are not enough players registered to begin this tournament.")
+                                elif len(selected_tournament.players) % 2 != 0:
+                                    print("The number of registered players must be even to begin this tournament.")
                                 else:
                                     complete_choice = input("Mark tournament as completed? (y/n): ").lower()
                                     if complete_choice == 'y':
