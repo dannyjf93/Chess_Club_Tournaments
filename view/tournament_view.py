@@ -49,8 +49,8 @@ class TournamentView:
 
         # Display list of players sorted by score in descending order
         print("\nPlayers:")
-        sorted_players = sorted(tournament.players, key=lambda player:
-        tournament.scores[player['identifier']], reverse=True)
+        sorted_players = sorted(
+            tournament.players, key=lambda player: tournament.scores[player['identifier']], reverse=True)
         for index, player in enumerate(sorted_players, start=1):
             club = player.get('club', 'No club')
             place = self.ordinal(index)
