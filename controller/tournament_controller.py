@@ -3,17 +3,19 @@ import os
 import logging
 import random
 from model.tournament import Tournament
-from model.player import Player
 from model.club import Club
 
+# Set up logging
 logging.basicConfig(level=logging.DEBUG)
 
 class TournamentController:
     def __init__(self):
+        # Initialize the controller, load tournaments and clubs from files
         self.filename = 'data/tournaments.json'
         self.tournaments = self.load_from_file()
         self.clubs = self.load_clubs()
 
+    # Load tournaments from a JSON file
     def load_from_file(self):
         if not os.path.exists(self.filename):
             return []
@@ -22,10 +24,12 @@ class TournamentController:
         tournaments = [Tournament.from_dict(data) for data in tournaments_data]
         return tournaments
 
+    # Save tournaments to a JSON file
     def save_to_file(self):
         with open(self.filename, 'w') as f:
             json.dump([tournament.to_dict() for tournament in self.tournaments], f, indent=4)
 
+    # Load clubs from a JSON file
     def load_clubs(self):
         filename = 'data/clubs.json'
         if not os.path.exists(filename):
@@ -35,11 +39,13 @@ class TournamentController:
         clubs = [Club.from_dict(data) for data in clubs_data]
         return clubs
 
+    # Create a new tournament and save it to the file
     def create_tournament(self, name, venue, start_date, end_date, number_of_rounds):
         tournament = Tournament(name, venue, start_date, end_date, number_of_rounds)
         self.tournaments.append(tournament)
         self.save_to_file()
 
+    # Register a player for a tournament
     def register_player(self, tournament_name, player):
         tournament = self.find_tournament(tournament_name)
         if tournament:
@@ -55,6 +61,7 @@ class TournamentController:
                 tournament.scores[player['identifier']] = 0.0
             self.save_to_file()
 
+    # Get the club name for a player based on their identifier
     def get_player_club(self, player_identifier):
         for club in self.clubs:
             for player in club.players:
@@ -64,6 +71,7 @@ class TournamentController:
         logging.debug(f"No club found for player '{player_identifier}'")
         return "No club"
 
+    # Enter match results for a specific round in a tournament
     def enter_results(self, tournament_name, round_number, match_results):
         tournament = self.find_tournament(tournament_name)
         if tournament:
@@ -71,6 +79,7 @@ class TournamentController:
             if round_key not in tournament.results:
                 tournament.results[round_key] = []
 
+            # Update existing matches or add new matches
             for result in match_results:
                 match_found = False
                 for match in tournament.results[round_key]:
@@ -113,6 +122,7 @@ class TournamentController:
             logging.debug(f"Tournament '{tournament_name}' scores after entering results: {tournament.scores}")
             return True  # Indicate that results were successfully entered
 
+    # Edit match results for a specific round in a tournament
     def edit_results(self, tournament_name, round_number, match_index, new_result):
         tournament = self.find_tournament(tournament_name)
         if tournament:
@@ -143,6 +153,7 @@ class TournamentController:
             self.save_to_file()
             logging.debug(f"Tournament '{tournament_name}' scores after editing results: {tournament.scores}")
 
+    # Update scores for players based on match results
     def update_scores(self, tournament, results):
         for result in results:
             if result.get('draw'):
@@ -151,6 +162,7 @@ class TournamentController:
             else:
                 tournament.scores[result['winner_id']] += 1.0
 
+    # Revert scores for players based on old match results
     def revert_scores(self, tournament, result):
         if result.get('draw'):
             tournament.scores[result['player1_id']] -= 0.5
@@ -158,24 +170,29 @@ class TournamentController:
         elif 'winner_id' in result:
             tournament.scores[result['winner_id']] -= 1.0
 
+    # Advance to the next round in a tournament
     def advance_round(self, tournament_name):
         tournament = self.find_tournament(tournament_name)
         if tournament:
             tournament.current_round += 1
             self.save_to_file()
 
+    # Find a tournament by name
     def find_tournament(self, name):
         for tournament in self.tournaments:
             if tournament.name == name:
                 return tournament
         return None
 
+    # Pair players for matches in the current round
     def pair_players(self, tournament):
         if tournament.current_round == 1:
+            # Random pairing for the first round
             players = tournament.players[:]
             random.shuffle(players)
             matches = [(players[i], players[i + 1]) for i in range(0, len(players), 2)]
         else:
+            # Pair players based on scores for subsequent rounds
             players = sorted(tournament.players, key=lambda p: tournament.scores[p['identifier']], reverse=True)
             matches = [(players[i], players[i + 1]) for i in range(0, len(players), 2)]
 
@@ -184,20 +201,24 @@ class TournamentController:
         self.save_to_file()
         return tournament.results[round_key]
 
+    # Get a list of in-progress tournaments
     def report_in_progress(self):
         return [tournament for tournament in self.tournaments if not tournament.is_completed()]
 
+    # Get a list of completed tournaments
     def report_completed(self):
         completed_tournaments = [tournament for tournament in self.tournaments if tournament.is_completed()]
         completed_tournaments.sort(key=lambda x: x.end_date, reverse=True)
         return completed_tournaments
 
+    # Mark a tournament as completed
     def mark_tournament_completed(self, tournament_name):
         tournament = self.find_tournament(tournament_name)
         if tournament:
             tournament.completed = True
             self.save_to_file()
 
+    # Save tournaments to a JSON file (duplicate of save_to_file, included for completeness)
     def save_tournaments(self):
         with open(self.filename, 'w') as f:
             json.dump([tournament.to_dict() for tournament in self.tournaments], f, indent=4)

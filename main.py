@@ -10,8 +10,10 @@ from view.club_view import ClubView
 from view.player_view import PlayerView
 from view.tournament_view import TournamentView
 
+# Set up logging
 logging.basicConfig(level=logging.DEBUG)
 
+# Initialize data files if they don't exist
 def initialize_data_files():
     data_files = {
         'data/clubs.json': [],
@@ -30,6 +32,7 @@ def initialize_data_files():
 def main():
     initialize_data_files()
 
+    # Initialize controllers and views
     club_controller = ClubController()
     player_controller = PlayerController()
     tournament_controller = TournamentController()
@@ -37,25 +40,30 @@ def main():
     player_view = PlayerView()
     tournament_view = TournamentView()
 
+    # Main menu loop
     while True:
         print("\n1. Manage Clubs\n2. Create New Tournament\n3. View/Manage Tournament\n4. Reports\n5. Exit")
         choice = input("Enter your choice: ")
 
         if choice == '1':
+            # Manage Clubs menu loop
             while True:
                 print("\n1. View Existing Clubs\n2. Create New Club\n3. View Players by Club\n4. Add New Player to Club\n5. Back")
                 sub_choice = input("Enter your choice: ")
 
                 if sub_choice == '1':
+                    # View existing clubs
                     clubs = club_controller.view_clubs()
                     if not clubs:
                         club_view.display_no_clubs_message()
                     else:
                         club_view.display_clubs(clubs)
                 elif sub_choice == '2':
+                    # Create a new club
                     name = input("Enter club name: ")
                     club_controller.create_club(name)
                 elif sub_choice == '3':
+                    # View players by club
                     clubs = club_controller.view_clubs()
                     if not clubs:
                         club_view.display_no_clubs_message()
@@ -87,11 +95,13 @@ def main():
                                             new_identifier = input(f"Identifier [{player['identifier']}]: ").strip()
                                             new_birthdate = input(f"Birthdate [{player['birthdate']}]: ").strip()
 
+                                            # Update player details
                                             player['name'] = new_name if new_name else player['name']
                                             player['email'] = new_email if new_email else player['email']
                                             player['identifier'] = new_identifier if new_identifier else player['identifier']
                                             player['birthdate'] = new_birthdate if new_birthdate else player['birthdate']
 
+                                            # Save updated details
                                             Club.save_to_file(club_controller.clubs, club_controller.filename)
                                             Player.save_to_file(player_controller.players, player_controller.filename)
                                             print("Player details updated successfully.")
@@ -104,6 +114,7 @@ def main():
                         except ValueError:
                             print("Invalid input. Please enter a number.")
                 elif sub_choice == '4':
+                    # Add new player to a club
                     clubs = club_controller.view_clubs()
                     if not clubs:
                         club_view.display_no_clubs_message()
@@ -136,6 +147,7 @@ def main():
                     break
 
         elif choice == '2':
+            # Create a new tournament
             name = input("Enter tournament name: ")
             venue = input("Enter venue: ")
             start_date = input("Enter start date: ")
@@ -144,6 +156,7 @@ def main():
             tournament_controller.create_tournament(name, venue, start_date, end_date, rounds)
 
         elif choice == '3':
+            # View/Manage tournament menu loop
             while True:
                 tournaments = tournament_controller.report_in_progress()
                 if not tournaments:
@@ -173,6 +186,7 @@ def main():
                                     register_choice = input("Enter your choice: ")
 
                                     if register_choice == '1':
+                                        # Select from list of all players
                                         players = player_controller.view_players()
                                         player_view.display_players_with_clubs(players, tournament_controller)
                                         player_view.display_player_selection_prompt()
@@ -190,6 +204,7 @@ def main():
                                             print("Invalid input. Please enter a number.")
 
                                     elif register_choice == '2':
+                                        # Search for player by chess identifier
                                         identifier = input("Enter chess identifier: ")
                                         players = [p for p in player_controller.view_players() if p.identifier == identifier]
                                         player_view.display_search_results(players, tournament_controller)
@@ -209,6 +224,7 @@ def main():
                                                 print("Invalid input. Please enter a number.")
 
                                     elif register_choice == '3':
+                                        # Search for player by name
                                         name_part = input("Enter part of player's name: ").lower()
                                         players = [p for p in player_controller.view_players() if name_part in p.name.lower()]
                                         player_view.display_search_results(players, tournament_controller)
@@ -230,6 +246,7 @@ def main():
                                         continue
 
                             elif sub_choice == '2':
+                                # Enter results for the current round
                                 if len(selected_tournament.players) < 2:
                                     print("There are not enough players registered to begin this tournament.")
                                 elif len(selected_tournament.players) % 2 != 0:
@@ -346,6 +363,7 @@ def main():
                                                 break
 
                             elif sub_choice == '3':
+                                # Advance to the next round
                                 if len(selected_tournament.players) < 2:
                                     print("There are not enough players registered to begin this tournament.")
                                 elif len(selected_tournament.players) % 2 != 0:
@@ -370,6 +388,7 @@ def main():
                                             print("You must enter the results for the current round before advancing to the next round.")
 
                             elif sub_choice == '4':
+                                # Mark tournament as completed
                                 if len(selected_tournament.players) < 2:
                                     print("There are not enough players registered to begin this tournament.")
                                 elif len(selected_tournament.players) % 2 != 0:
@@ -382,6 +401,7 @@ def main():
                                         break
 
                             elif sub_choice == '5':
+                                # View registered players
                                 if not selected_tournament.players:
                                     print("No players have been registered for this tournament yet.")
                                 else:
@@ -397,11 +417,13 @@ def main():
                     print("Invalid input. Please enter a number.")
 
         elif choice == '4':
+            # Reports menu loop
             while True:
                 print("\n1. Tournaments in progress\n2. Completed tournaments\n3. Back")
                 sub_choice = input("Enter your choice: ")
 
                 if sub_choice == '1':
+                    # Display tournaments in progress
                     tournaments = tournament_controller.report_in_progress()
                     if not tournaments:
                         tournament_view.display_no_tournaments_message()
@@ -423,6 +445,7 @@ def main():
                         except ValueError:
                             print("Invalid input. Please enter a number.")
                 elif sub_choice == '2':
+                    # Display completed tournaments
                     tournaments = tournament_controller.report_completed()
                     if not tournaments:
                         tournament_view.display_no_tournaments_message()
