@@ -6,13 +6,13 @@ This is an applications which can be used to manage chess clubs, their correspon
 
 **Player Registration:** Enable players to register by providing their name, email, birthdate, and National Chess ID.
 
-**Tournament Creation/Management:** Tournament organizers are able to create new tournaments, register players from all available clubs, set the number of rounds per tournament, and record matches/player rankings.
+**Tournament Creation/Management:** Tournament organizers are able to create new tournaments, register players from all available clubs, set the number of rounds per tournament, and record matches for each round.
 
-**Match Pairing:** Dynamically pair players in matches based on points gained in each successive match. 
+**Match Pairing:** First round matchmaking is random with subsequent rounds dynamically pairing players in matches based on points gained in each successive match. 
 
-**Result Recording:** Results are recorded for each match within a tournament showing the match pairings, round results, points per player, and player rankings.
+**Result Recording:** Results are recorded for each match within a round. 
 
-**Report Generation:** Reports available to display player information and tournament results.
+**Report Generation:** Reports available to display information for both in progress and completed tournaments. This includes player score and ranking. 
 
 # Running the application from the terminal
 ### Mac:
