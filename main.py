@@ -1,6 +1,5 @@
 import os
 import json
-import logging
 from controller.club_controller import ClubController
 from controller.player_controller import PlayerController
 from controller.tournament_controller import TournamentController
@@ -9,9 +8,6 @@ from model.player import Player
 from view.club_view import ClubView
 from view.player_view import PlayerView
 from view.tournament_view import TournamentView
-
-# Set up logging
-logging.basicConfig(level=logging.DEBUG)
 
 # Initialize data files if they don't exist
 def initialize_data_files():

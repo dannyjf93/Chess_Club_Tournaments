@@ -1,12 +1,8 @@
 import json
 import os
-import logging
 import random
 from model.tournament import Tournament
 from model.club import Club
-
-# Set up logging
-logging.basicConfig(level=logging.DEBUG)
 
 class TournamentController:
     def __init__(self):
@@ -66,9 +62,7 @@ class TournamentController:
         for club in self.clubs:
             for player in club.players:
                 if player['identifier'] == player_identifier:
-                    logging.debug(f"Found club '{club.name}' for player '{player_identifier}'")
                     return club.name
-        logging.debug(f"No club found for player '{player_identifier}'")
         return "No club"
 
     # Enter match results for a specific round in a tournament
@@ -119,7 +113,6 @@ class TournamentController:
 
             self.update_scores(tournament, match_results)
             self.save_to_file()
-            logging.debug(f"Tournament '{tournament_name}' scores after entering results: {tournament.scores}")
             return True  # Indicate that results were successfully entered
 
     # Edit match results for a specific round in a tournament
@@ -151,7 +144,6 @@ class TournamentController:
                 })
             self.update_scores(tournament, [new_result])
             self.save_to_file()
-            logging.debug(f"Tournament '{tournament_name}' scores after editing results: {tournament.scores}")
 
     # Update scores for players based on match results
     def update_scores(self, tournament, results):
