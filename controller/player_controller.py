@@ -1,5 +1,6 @@
 from model.player import Player
 
+
 class PlayerController:
     def __init__(self, filename='data/players.json'):
         # Initialize the controller with the filename for storing player data

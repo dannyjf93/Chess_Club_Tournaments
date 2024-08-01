@@ -4,6 +4,7 @@ import random
 from model.tournament import Tournament
 from model.club import Club
 
+
 class TournamentController:
     def __init__(self):
         # Initialize the controller, load tournaments and clubs from files
@@ -189,7 +190,9 @@ class TournamentController:
             matches = [(players[i], players[i + 1]) for i in range(0, len(players), 2)]
 
         round_key = str(tournament.current_round)
-        tournament.results[round_key] = [{'player1': match[0]['name'], 'player1_id': match[0]['identifier'], 'player2': match[1]['name'], 'player2_id': match[1]['identifier'], 'draw': None} for match in matches]
+        tournament.results[round_key] = [
+            {'player1': match[0]['name'], 'player1_id': match[0]['identifier'], 'player2': match[1]['name'],
+             'player2_id': match[1]['identifier'], 'draw': None} for match in matches]
         self.save_to_file()
         return tournament.results[round_key]
 

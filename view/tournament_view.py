@@ -40,25 +40,29 @@ class TournamentView:
             for match in matches:
                 if match.get('draw'):
                     # If the match was a draw
-                    print(f"Match: {match['player1']} (ID: {match['player1_id']}) vs {match['player2']} (ID: {match['player2_id']}) - Draw")
+                    print(f"Match: {match['player1']} (ID: {match['player1_id']})"
+                          f" vs {match['player2']} (ID: {match['player2_id']}) - Draw")
                 else:
                     # If there was a winner and loser
-                    print(f"Match: {match['winner']} (ID: {match['winner_id']}) defeated {match['loser']} (ID: {match['loser_id']})")
+                    print(f"Match: {match['winner']} (ID: {match['winner_id']})"
+                          f" defeated {match['loser']} (ID: {match['loser_id']})")
 
         # Display list of players sorted by score in descending order
         print("\nPlayers:")
-        sorted_players = sorted(tournament.players, key=lambda player: tournament.scores[player['identifier']], reverse=True)
+        sorted_players = sorted(tournament.players, key=lambda player:
+        tournament.scores[player['identifier']], reverse=True)
         for index, player in enumerate(sorted_players, start=1):
             club = player.get('club', 'No club')
             place = self.ordinal(index)
-            print(f"{place} place: {player['name']} (ID: {player['identifier']}) - Club: {club}, Score: {tournament.scores[player['identifier']]}")
+            print(f"{place} place: {player['name']} (ID: {player['identifier']})"
+                  f" - Club: {club}, Score: {tournament.scores[player['identifier']]}")
 
     # Display prompt for entering match result
     def display_prompt_for_match_result(self, match, match_index):
         print(f"Match {match_index + 1}:")
         print(f"1. {match['player1']} (ID: {match['player1_id']}) wins")
         print(f"2. {match['player2']} (ID: {match['player2_id']}) wins")
-        print(f"3. Draw")
+        print("3. Draw")
 
     # Display message for invalid choice
     def display_invalid_choice_message(self):

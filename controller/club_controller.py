@@ -3,6 +3,7 @@ import os
 from model.club import Club
 from model.player import Player
 
+
 class ClubController:
     def __init__(self):
         # Initialize the controller, load clubs and players from files

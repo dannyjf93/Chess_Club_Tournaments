@@ -1,6 +1,7 @@
 import json
 import os
 
+
 class Player:
     def __init__(self, name, email, identifier, birthdate, club_name=None):
         # Initialize player attributes

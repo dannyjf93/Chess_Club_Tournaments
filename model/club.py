@@ -1,5 +1,6 @@
 import json
 
+
 class Club:
     def __init__(self, name, players=None):
         # Initialize club attributes
