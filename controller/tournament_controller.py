@@ -217,6 +217,7 @@ class TournamentController:
             self.save_to_file()
             print("Tournament marked as completed.")
 
+    # Confirm all round results have been recorded
     def all_rounds_completed(self, tournament):
         for round_number in range(1, tournament.number_of_rounds + 1):
             if str(round_number) not in tournament.results or not tournament.results[str(round_number)]:
