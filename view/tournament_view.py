@@ -51,11 +51,21 @@ class TournamentView:
         print("\nPlayers:")
         sorted_players = sorted(
             tournament.players, key=lambda player: tournament.scores[player['identifier']], reverse=True)
-        for index, player in enumerate(sorted_players, start=1):
+        rank = 1
+        previous_score = None
+        same_rank_count = 0
+        for index, player in enumerate(sorted_players):
+            current_score = tournament.scores[player['identifier']]
+            if current_score != previous_score:
+                rank = index + 1 - same_rank_count
+                same_rank_count = 0
+            else:
+                same_rank_count += 1
             club = player.get('club', 'No club')
-            place = self.ordinal(index)
+            place = self.ordinal(rank)
             print(f"{place} place: {player['name']} (ID: {player['identifier']})"
                   f" - Club: {club}, Score: {tournament.scores[player['identifier']]}")
+            previous_score = current_score
 
     # Display prompt for entering match result
     def display_prompt_for_match_result(self, match, match_index):
