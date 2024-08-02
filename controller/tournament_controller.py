@@ -210,8 +210,18 @@ class TournamentController:
     def mark_tournament_completed(self, tournament_name):
         tournament = self.find_tournament(tournament_name)
         if tournament:
+            if not self.all_rounds_completed(tournament):
+                print("Cannot mark the tournament as completed. Not all round results are recorded.")
+                return
             tournament.completed = True
             self.save_to_file()
+            print("Tournament marked as completed.")
+
+    def all_rounds_completed(self, tournament):
+        for round_number in range(1, tournament.number_of_rounds + 1):
+            if str(round_number) not in tournament.results or not tournament.results[str(round_number)]:
+                return False
+        return True
 
     # Save tournaments to a JSON file (duplicate of save_to_file, included for completeness)
     def save_tournaments(self):

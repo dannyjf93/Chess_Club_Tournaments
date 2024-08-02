@@ -10,7 +10,7 @@ from view.player_view import PlayerView
 from view.tournament_view import TournamentView
 
 
-# Initialize data files if they don't exist
+# Function to initialize data files if they don't exist
 def initialize_data_files():
     data_files = {
         'data/clubs.json': [],
@@ -18,15 +18,18 @@ def initialize_data_files():
         'data/tournaments.json': []
     }
 
+    # Create the 'data' directory if it doesn't exist
     if not os.path.exists('data'):
         os.makedirs('data')
 
+    # Create the data files with default content if they don't exist
     for file, default_content in data_files.items():
         if not os.path.exists(file):
             with open(file, 'w') as f:
                 json.dump(default_content, f, indent=4)
 
 
+# Main function
 def main():
     initialize_data_files()
 
@@ -46,8 +49,8 @@ def main():
         if choice == '1':
             # Manage Clubs menu loop
             while True:
-                print("\n1. View Existing Clubs\n2. Create New Club"
-                      "\n3. View Players by Club\n4. Add New Player to Club\n5. Back")
+                print("\n1. View Existing Clubs\n2. Create New Club\n3. View Players by Club\n4. Add New Player to "
+                      "Club\n5. Back")
                 sub_choice = input("Enter your choice: ")
 
                 if sub_choice == '1':
@@ -94,7 +97,7 @@ def main():
                                             new_identifier = input(f"Identifier [{player['identifier']}]: ").strip()
                                             new_birthdate = input(f"Birthdate [{player['birthdate']}]: ").strip()
 
-                                            # Update player details
+                                            # Update player details if new values are provided
                                             player['name'] = new_name if new_name else player['name']
                                             player['email'] = new_email if new_email else player['email']
                                             player['identifier'] = new_identifier \
@@ -145,6 +148,7 @@ def main():
                         except ValueError:
                             print("Invalid input. Please enter a number.")
                 elif sub_choice == '5':
+                    # Go back to the main menu
                     break
 
         elif choice == '2':
@@ -184,12 +188,11 @@ def main():
                             if sub_choice == '1':
                                 # Check if any results have been recorded
                                 if any(selected_tournament.results.values()):
-                                    print("Cannot register new players as results"
-                                          " have already been recorded for this tournament.")
+                                    print("Cannot register new players as results have already been recorded for this "
+                                          "tournament.")
                                 else:
-                                    print("\n1. Select from list of all players"
-                                          "\n2. Search for player by chess identifier"
-                                          "\n3. Search for player by name (case insensitive)\n4. Back")
+                                    print("\n1. Select from list of all players\n2. Search for player by chess "
+                                          "identifier\n3. Search for player by name (case insensitive)\n4. Back")
                                     register_choice = input("Enter your choice: ")
 
                                     if register_choice == '1':
@@ -321,11 +324,11 @@ def main():
                                                         print("Invalid choice. Please try again.")
                                                         continue
 
-                                                    tournament_controller.edit_results(selected_tournament.name,
-                                                                                       round_number, match_index,
-                                                                                       new_result)
+                                                    tournament_controller.edit_results(
+                                                        selected_tournament.name,
+                                                        round_number, match_index, new_result)
                                                     break
-                                            break  # Exit the edit loop
+                                            break
                                     else:
                                         matches = tournament_controller.pair_players(selected_tournament)
                                         for match_index, match in enumerate(matches):
@@ -373,9 +376,8 @@ def main():
                                                     print("Invalid choice. Please try again.")
                                                     continue
 
-                                                tournament_controller.enter_results(selected_tournament.name,
-                                                                                    round_number,
-                                                                                    [match_results])
+                                                tournament_controller.enter_results(
+                                                    selected_tournament.name, round_number, [match_results])
                                                 break
 
                             elif sub_choice == '3':
@@ -385,27 +387,29 @@ def main():
                                 elif len(selected_tournament.players) % 2 != 0:
                                     print("The number of registered players must be even to begin this tournament.")
                                 else:
-                                    if selected_tournament.current_round >= selected_tournament.number_of_rounds:
-                                        print("All rounds have been played.")
-                                        complete_choice = input("Mark tournament as completed? (y/n): ").lower()
-                                        if complete_choice == 'y':
-                                            tournament_controller.mark_tournament_completed(selected_tournament.name)
-                                            print("You can now view the completed tournament in the Reports menu.")
-                                            break
+                                    if selected_tournament.current_round == selected_tournament.number_of_rounds:
+                                        if (str(selected_tournament.current_round)
+                                                not in selected_tournament.results
+                                                or not selected_tournament.results[str(
+                                                    selected_tournament.current_round)]):
+                                            print("Cannot continue without recording the results for the final round.")
+                                        else:
+                                            print("All rounds have already been played.")
                                     else:
-                                        if (str(selected_tournament.current_round) in selected_tournament.results
+                                        if (str(selected_tournament.current_round)
+                                                in selected_tournament.results
                                                 and selected_tournament.results[str(
                                                     selected_tournament.current_round)]):
-                                            confirm_choice = input("Are you sure you want"
-                                                                   " to advance to the next round? [y/n]: ").lower()
+                                            confirm_choice = input("Are you sure you want to advance to the next "
+                                                                   "round? [y/n]: ").lower()
                                             if confirm_choice == 'y':
                                                 tournament_controller.advance_round(selected_tournament.name)
                                                 print("Advanced to the next round.")
                                             else:
                                                 print("Stayed on the current round.")
                                         else:
-                                            print("You must enter the results for the current round"
-                                                  " before advancing to the next round.")
+                                            print("You must enter the results for the current round before advancing "
+                                                  "to the next round.")
 
                             elif sub_choice == '4':
                                 # Mark tournament as completed
@@ -414,11 +418,15 @@ def main():
                                 elif len(selected_tournament.players) % 2 != 0:
                                     print("The number of registered players must be even to begin this tournament.")
                                 else:
-                                    complete_choice = input("Mark tournament as completed? (y/n): ").lower()
-                                    if complete_choice == 'y':
-                                        tournament_controller.mark_tournament_completed(selected_tournament.name)
-                                        print("You can now view the completed tournament in the Reports menu.")
-                                        break
+                                    if len(selected_tournament.results) < selected_tournament.number_of_rounds:
+                                        print("Cannot mark the tournament as completed. Not all round results are "
+                                              "recorded.")
+                                    else:
+                                        complete_choice = input("Mark tournament as completed? (y/n): ").lower()
+                                        if complete_choice == 'y':
+                                            tournament_controller.mark_tournament_completed(selected_tournament.name)
+                                            print("You can now view the completed tournament in the Reports menu.")
+                                            break
 
                             elif sub_choice == '5':
                                 # View registered players
@@ -431,6 +439,7 @@ def main():
                                         print(f"{index}. {player['name']}"
                                               f" (ID: {player['identifier']}) - Club: {club_name}")
                             elif sub_choice == '6':
+                                # Go back to the previous menu
                                 break
                             else:
                                 print("Invalid selection. Please try again.")
@@ -488,9 +497,11 @@ def main():
                         except ValueError:
                             print("Invalid input. Please enter a number.")
                 elif sub_choice == '3':
+                    # Go back to the main menu
                     break
 
         elif choice == '5':
+            # Exit the program
             break
 
 
