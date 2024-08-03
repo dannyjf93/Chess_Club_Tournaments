@@ -205,6 +205,7 @@ def main():
 
                                     if register_choice == '1':
                                         # Select from list of all players
+                                        tournament_controller.players = tournament_controller.load_players()
                                         players = player_controller.view_players()
                                         player_view.display_players_with_clubs(players, tournament_controller)
                                         player_view.display_player_selection_prompt()
@@ -223,6 +224,7 @@ def main():
 
                                     elif register_choice == '2':
                                         # Search for player by chess identifier
+                                        tournament_controller.players = tournament_controller.load_players()
                                         identifier = input("Enter chess identifier: ")
                                         players = [p for p in player_controller.view_players() if
                                                    p.identifier == identifier]
@@ -245,6 +247,7 @@ def main():
 
                                     elif register_choice == '3':
                                         # Search for player by name
+                                        tournament_controller.players = tournament_controller.load_players()
                                         name_part = input("Enter part of player's name: ").lower()
                                         players = [p for p in player_controller.view_players() if
                                                    name_part in p.name.lower()]
