@@ -83,3 +83,6 @@ class ClubController:
                 if player['identifier'] == player_identifier:
                     return club.name
         return "No club"
+
+    def reload_players(self):
+        self.players = self.load_players()

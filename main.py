@@ -192,8 +192,8 @@ def main():
 
                             if sub_choice == '1':
                                 player_controller.players = Player.load_from_file(player_controller.filename)
-                                club_controller.clubs = Club.load_from_file(club_controller.filename)
-                                club_controller.players = club_controller.load_players()
+                                club_controller.reload_players()
+                                tournament_controller.reload_clubs()
 
                                 for player in player_controller.players:
                                     player.club_name = tournament_controller.get_player_club(player.identifier)

@@ -241,3 +241,6 @@ class TournamentController:
     def save_tournaments(self):
         with open(self.filename, 'w') as f:
             json.dump([tournament.to_dict() for tournament in self.tournaments], f, indent=4)
+
+    def reload_clubs(self):
+        self.clubs = self.load_clubs()
