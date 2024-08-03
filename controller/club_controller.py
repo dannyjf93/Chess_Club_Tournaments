@@ -68,3 +68,16 @@ class ClubController:
                 self.save_to_file()
                 self.save_players()
                 break
+
+    def refresh_players_and_clubs(self):
+        self.players = self.load_players()
+        self.clubs = self.load_from_file()
+        for player in self.players:
+            player.club_name = self.get_player_club(player.identifier)
+
+    def get_player_club(self, player_identifier):
+        for club in self.clubs:
+            for player in club.players:
+                if player['identifier'] == player_identifier:
+                    return club.name
+        return "No club"
