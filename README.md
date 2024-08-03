@@ -22,8 +22,11 @@ This is an application which can be used to manage chess clubs, their correspond
     Navigate to the directory containing the repository
     $ cd Chess_Club_Tournaments
 
-    Create and activate a virtual environment
+    Create a virtual environment
     $ python -m venv env
+
+    Activate the virtual environment
+    $ env\Scripts\activate
     
     Run the application
     $ python main.py
@@ -36,9 +39,12 @@ This is an application which can be used to manage chess clubs, their correspond
     Navigate to the directory containing the repository
     $ cd Chess_Club_Tournaments
 
-    Create and activate a virtual environment
+    Create a virtual environment
     $ python -m venv env
-    
+
+    Activate the virtual environment
+    $ env\Scripts\activate
+
     Run the application
     $ python main.py
 
