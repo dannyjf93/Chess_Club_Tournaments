@@ -191,6 +191,9 @@ def main():
                             sub_choice = input("Enter your choice: ")
 
                             if sub_choice == '1':
+                                player_controller.players = Player.load_from_file(player_controller.filename)
+                                for player in player_controller.players:
+                                    player.club_name = tournament_controller.get_player_club(player.identifier)
                                 # Check if any results have been recorded
                                 if any(selected_tournament.results.values()):
                                     print(
