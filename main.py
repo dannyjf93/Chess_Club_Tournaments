@@ -193,6 +193,7 @@ def main():
                             if sub_choice == '1':
                                 club_controller.refresh_players_and_clubs()
                                 player_controller.refresh_players()
+
                                 for player in player_controller.players:
                                     player.club_name = tournament_controller.get_player_club(player.identifier)
                                 # Check if any results have been recorded
@@ -209,10 +210,7 @@ def main():
 
                                     if register_choice == '1':
                                         # Select from list of all players
-                                        player_controller.players = Player.load_from_file(player_controller.filename)
                                         players = player_controller.view_players()
-                                        for player in players:
-                                            player.club_name = tournament_controller.get_player_club(player.identifier)
                                         player_view.display_players_with_clubs(players, tournament_controller)
                                         player_view.display_player_selection_prompt()
                                         player_choice = input("Enter your choice: ")
