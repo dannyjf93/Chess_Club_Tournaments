@@ -42,7 +42,7 @@ class TournamentController:
     def load_players(self):
         filename = 'data/players.json'
         if not os.path.exists(filename):
-            return[]
+            return []
         with open(filename, 'r') as f:
             players_data = json.load(f)
         players = [Player.from_dict(data) for data in players_data]
