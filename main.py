@@ -207,6 +207,8 @@ def main():
                                         # Select from list of all players
                                         player_controller.players = Player.load_from_file(player_controller.filename)
                                         players = player_controller.view_players()
+                                        for player in players:
+                                            player.club_name = tournament_controller.get_player_club(player.identifier)
                                         player_view.display_players_with_clubs(players, tournament_controller)
                                         player_view.display_player_selection_prompt()
                                         player_choice = input("Enter your choice: ")
@@ -228,6 +230,8 @@ def main():
                                         identifier = input("Enter chess identifier: ")
                                         players = [p for p in player_controller.view_players() if
                                                    p.identifier == identifier]
+                                        for player in players:
+                                            player.club_name = tournament_controller.get_player_club(player.identifier)
                                         player_view.display_search_results(players, tournament_controller)
                                         if players:
                                             player_view.display_player_selection_prompt()
@@ -251,6 +255,8 @@ def main():
                                         name_part = input("Enter part of player's name: ").lower()
                                         players = [p for p in player_controller.view_players() if
                                                    name_part in p.name.lower()]
+                                        for player in players:
+                                            player.club_name = tournament_controller.get_player_club(player.identifier)
                                         player_view.display_search_results(players, tournament_controller)
                                         if players:
                                             player_view.display_player_selection_prompt()
