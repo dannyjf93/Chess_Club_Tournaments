@@ -1,7 +1,11 @@
 class TournamentView:
     # Display message when there are no in progress tournaments available
-    def display_no_tournaments_message(self):
+    def display_no_in_progress_tournaments_message(self):
         print("There are no in progress tournaments available.")
+
+    # Display message when there are no completed tournaments available
+    def display_no_completed_tournaments_message(self):
+        print("There are no completed tournaments available.")
 
     # Display list of in-progress tournaments
     def display_in_progress_tournaments(self, tournaments):

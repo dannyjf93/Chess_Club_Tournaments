@@ -465,7 +465,7 @@ def main():
                     # Display tournaments in progress
                     tournaments = tournament_controller.report_in_progress()
                     if not tournaments:
-                        tournament_view.display_no_tournaments_message()
+                        tournament_view.display_no_in_progress_tournaments_message()
                         continue
                     while True:
                         tournament_view.display_in_progress_tournaments(tournaments)
@@ -487,7 +487,7 @@ def main():
                     # Display completed tournaments
                     tournaments = tournament_controller.report_completed()
                     if not tournaments:
-                        tournament_view.display_no_tournaments_message()
+                        tournament_view.display_no_completed_tournaments_message()
                         continue
                     while True:
                         tournament_view.display_completed_tournaments(tournaments)
