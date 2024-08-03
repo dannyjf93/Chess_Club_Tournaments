@@ -20,3 +20,6 @@ class PlayerController:
     # Return the list of players
     def view_players(self):
         return self.players
+
+    def refresh_players(self):
+        self.players = Player.load_from_file(self.filename)
