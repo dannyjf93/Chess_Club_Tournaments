@@ -169,7 +169,7 @@ def main():
             while True:
                 tournaments = tournament_controller.report_in_progress()
                 if not tournaments:
-                    tournament_view.display_no_tournaments_message()
+                    tournament_view.display_no_in_progress_tournaments_message()
                     break
                 tournament_view.display_in_progress_tournaments(tournaments)
                 tournament_view.display_tournament_selection_prompt()
