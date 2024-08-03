@@ -3,14 +3,16 @@ import os
 import random
 from model.tournament import Tournament
 from model.club import Club
+from model.player import Player
 
 
 class TournamentController:
     def __init__(self):
-        # Initialize the controller, load tournaments and clubs from files
+        # Initialize the controller, load tournaments, clubs, and players from files
         self.filename = 'data/tournaments.json'
         self.tournaments = self.load_from_file()
         self.clubs = self.load_clubs()
+        self.players = self.load_players()
 
     # Load tournaments from a JSON file
     def load_from_file(self):
@@ -36,6 +38,16 @@ class TournamentController:
         clubs = [Club.from_dict(data) for data in clubs_data]
         return clubs
 
+    # Load players from a JSON file
+    def load_players(self):
+        filename = 'data/players.json'
+        if not os.path.exists(filename):
+            return[]
+        with open(filename, 'r') as f:
+            players_data = json.load(f)
+        players = [Player.from_dict(data) for data in players_data]
+        return players
+
     # Create a new tournament and save it to the file
     def create_tournament(self, name, venue, start_date, end_date, number_of_rounds):
         tournament = Tournament(name, venue, start_date, end_date, number_of_rounds)
@@ -44,6 +56,7 @@ class TournamentController:
 
     # Register a player for a tournament
     def register_player(self, tournament_name, player):
+        self.players = self.load_players()
         tournament = self.find_tournament(tournament_name)
         if tournament:
             for registered_player in tournament.players:
