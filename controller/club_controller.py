@@ -67,6 +67,8 @@ class ClubController:
                 self.players.append(player)
                 self.save_to_file()
                 self.save_players()
+                self.clubs = self.load_from_file()
+                self.players = self.load_players()
                 break
 
     def refresh_players_and_clubs(self):
