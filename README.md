@@ -1,4 +1,4 @@
-# Chess_Club_Tournaments
+# Chess Club Tournaments
 This is an application which can be used to manage chess clubs, their corresponding players, and create/track tournaments for those players.
 
 ### Features Included
