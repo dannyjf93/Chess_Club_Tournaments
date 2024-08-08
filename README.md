@@ -20,6 +20,7 @@ This is an application which can be used to manage chess clubs, their correspond
 **Report Generation:** 
 *Reports available to display information for both in progress and completed tournaments. This includes player score and ranking.*
 
+
 # Running the application from the terminal
 ### Mac:
     Download files from this repository or create a clone using the code below
