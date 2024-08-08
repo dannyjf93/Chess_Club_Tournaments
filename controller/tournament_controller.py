@@ -237,6 +237,5 @@ class TournamentController:
                 return False
         return True
 
-
     def reload_clubs(self):
         self.clubs = self.load_clubs()
