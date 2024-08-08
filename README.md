@@ -2,17 +2,23 @@
 This is an application which can be used to manage chess clubs, their corresponding players, and create/track tournaments for those players.
 
 ### Features Included
-**Club management** Enable club managers to create new clubs, add new players to clubs, and edit existing players within a given club. 
+**Club management** 
+Enable club managers to create new clubs, add new players to clubs, and edit existing players within a given club. 
 
-**Player Registration:** Enable players to register by providing their name, email, birthdate, and National Chess ID.
+**Player Registration:** 
+Enable players to register by providing their name, email, birthdate, and National Chess ID.
 
-**Tournament Creation/Management:** Tournament organizers are able to create new tournaments, register players from all available clubs, set the number of rounds per tournament, and record matches for each round.
+**Tournament Creation/Management:** 
+Tournament organizers are able to create new tournaments, register players from all available clubs, set the number of rounds per tournament, and record matches for each round.
 
-**Match Pairing:** First round matchmaking is random with subsequent rounds dynamically pairing players in matches based on points gained in each successive match. 
+**Match Pairing:** 
+First round matchmaking is random with subsequent rounds dynamically pairing players in matches based on points gained in each successive match. 
 
-**Result Recording:** Results are recorded for each match within a round. 
+**Result Recording:** 
+Results are recorded for each match within a round. 
 
-**Report Generation:** Reports available to display information for both in progress and completed tournaments. This includes player score and ranking. 
+**Report Generation:** 
+Reports available to display information for both in progress and completed tournaments. This includes player score and ranking. 
 
 # Running the application from the terminal
 ### Mac:
@@ -66,7 +72,8 @@ This is an application which can be used to manage chess clubs, their correspond
 
 ### Future improvements
     1. Make tournament attributes editable except for number of rounds
-    2. Add functionality to "retire" players from a chess club so that they can no longer be registered for tournaments
+    2. Add functionality to "retire" players from a chess club so that they can no longer be registered for tournaments but their existing data is retained.
+    3. Add back out functionality for multiple areas (such as when clubs are being created)
 
 ### Important notes
     This application was created using Python version 3.12.4 - all requirements for this application are satisfied by libraries already included in Python 3.12.4
