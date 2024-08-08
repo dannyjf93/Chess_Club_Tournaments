@@ -21,5 +21,6 @@ class PlayerController:
     def view_players(self):
         return self.players
 
+    # Refresh players if needed
     def refresh_players(self):
         self.players = Player.load_from_file(self.filename)

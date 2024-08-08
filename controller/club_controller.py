@@ -71,12 +71,14 @@ class ClubController:
                 self.players = self.load_players()
                 break
 
+    # Refresh players and clubs if needed
     def refresh_players_and_clubs(self):
         self.players = self.load_players()
         self.clubs = self.load_from_file()
         for player in self.players:
             player.club_name = self.get_player_club(player.identifier)
 
+    # Get player club to display when needed
     def get_player_club(self, player_identifier):
         for club in self.clubs:
             for player in club.players:
@@ -84,5 +86,6 @@ class ClubController:
                     return club.name
         return "No club"
 
+    # Reload players if needed
     def reload_players(self):
         self.players = self.load_players()
