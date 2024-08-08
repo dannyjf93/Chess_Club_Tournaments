@@ -33,7 +33,7 @@ def initialize_data_files():
 def main():
     """
     Main function to run the application.
-    Initializes controllers and views. Displays the main menu.
+    Initializes controllers and views, and displays the main menu.
     """
     initialize_data_files()
 
