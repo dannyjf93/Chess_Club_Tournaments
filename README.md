@@ -74,6 +74,7 @@ Reports available to display information for both in progress and completed tour
     1. Make tournament attributes editable except for number of rounds
     2. Add functionality to "retire" players from a chess club so that they can no longer be registered for tournaments but their existing data is retained.
     3. Add back out functionality for multiple areas (such as when clubs are being created)
+    4. Add in checks for duplicates so that players cannot have the same chess ID and clubs/tournaments cannot have the same name. 
 
 ### Important notes
     This application was created using Python version 3.12.4 - all requirements for this application are satisfied by libraries already included in Python 3.12.4
